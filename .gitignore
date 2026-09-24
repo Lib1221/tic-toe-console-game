@@ -1,0 +1,13 @@
+# Build output
+*.o
+*.obj
+*.exe
+*.out
+a.out
+tictactoe
+build/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
