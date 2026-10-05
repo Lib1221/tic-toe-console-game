@@ -1,10 +1,20 @@
 #include<iostream>
+#include<cstdlib>
+#include<limits>
+#include<string>
 using namespace std;
 void display(string players);
 void display(string players){
     cout<<"___________________________________"<<endl;
     cout<<players<<" Win the game!!!!!"<<endl;
     cout<<"___________________________________"<<endl;
+    }
+void clearScreen(){
+#ifdef _WIN32
+    system("cls");
+#else
+    cout<<"\033[2J\033[H";
+#endif
     }
 int main(){
     string arr[3][3]={{"_","_","_"},{"_","_","_"},{"_","_","_"}};
@@ -39,19 +49,27 @@ int main(){
                     cout<<endl;
                         }
 
-                cin>>x;
-                int er=0;
-                for(int s=0;s<9;s++){
-                    if(x==collection[s]){
-                        collection[s]=0;
-                        er++;
+                // keep asking until the player picks a free square from 1 to 9
+                while(true){
+                    if(!(cin>>x)){
+                        if(cin.eof()){
+                            return 0;
+                        }
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+                        cout<<"please enter a number from 1 to 9"<<endl;
+                        continue;
                     }
-                }
-                if(er==0){
-                    int z;
-                    cout<<"please enter the number !!!!!  \n you entered the number entered before"<<endl;
-                    cin>>z;
-                    x=z;
+                    if(x<1||x>9){
+                        cout<<"please enter a number from 1 to 9"<<endl;
+                        continue;
+                    }
+                    if(collection[x-1]==0){
+                        cout<<"that square is already taken, pick another one"<<endl;
+                        continue;
+                    }
+                    collection[x-1]=0;
+                    break;
                 }
 
                 if(tracker%2!=0){
@@ -79,7 +97,7 @@ int main(){
 
                 }
                 tracker++;
-                system("cls");
+                clearScreen();
 
                 for(int z=0 ;z<3;z++){
                     if((arr[z][0]==arr[z][1]&&arr[z][1]==arr[z][2])&&(arr[z][0]=="X")){
@@ -186,12 +204,13 @@ int main(){
                         }
                          break;
                     }
-                    if(tracker==10 && count==0){
-            cout<<endl<<"___________________________________________________________________________________"<<endl;
-            cout<<"____________________________________!!!DRAW!!!!_____________________________"<<endl;
-            cout<<endl<<"___________________________________________________________________________________"<<endl;
-            jumper = 1;}
         }
+                if(tracker==10 && count==0){
+                    cout<<endl<<"___________________________________________________________________________________"<<endl;
+                    cout<<"____________________________________!!!DRAW!!!!_____________________________"<<endl;
+                    cout<<endl<<"___________________________________________________________________________________"<<endl;
+                    jumper = 1;
+                }
      }
    }
 
